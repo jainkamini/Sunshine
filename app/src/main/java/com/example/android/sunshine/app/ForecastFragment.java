@@ -173,6 +173,7 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public void onStart() {
+      //  Log.v(LOG_TAG, "in onStart");
         super.onStart();
         updateWeather();
     }
