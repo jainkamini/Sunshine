@@ -70,14 +70,15 @@ public class MainActivity extends ActionBarActivity  implements  ForecastFragmen
             return true;
         }
 
-        if (id == R.id.action_map) {
+       /* if (id == R.id.action_map) {
             openPreferredLocationInMap();
             return true;
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
-    private void openPreferredLocationInMap() {
+    //this code is used in ForcastFragment
+   /* private void openPreferredLocationInMap() {
         String location = Utility.getPreferredLocation(this);
 
         // Using the URI scheme for showing a location found on a map.  This super-handy
@@ -95,7 +96,7 @@ public class MainActivity extends ActionBarActivity  implements  ForecastFragmen
         } else {
             Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
         }
-    }
+    }*/
 
     @Override
     protected void onResume() {
