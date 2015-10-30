@@ -31,6 +31,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 
+import com.example.android.sunshine.app.data.WeatherContract;
+import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
+
 /**
  * A {@link PreferenceActivity} that presents a set of application settings.
  * <p>
@@ -90,6 +93,22 @@ public class SettingsActivity extends PreferenceActivity
         }
         return true;
     }
+
+    // This gets called after the preference is changed, which is important because we
+    // start our synchronization here
+   // @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if ( key.equals(getString(R.string.pref_location_key)) ) {
+            // we've changed the location
+            // first clear locationStatus
+            Utility.resetLocationStatus(this);
+            SunshineSyncAdapter.syncImmediately(this);
+        } else if ( key.equals(getString(R.string.pref_units_key)) ) {
+            // units have changed. update lists of weather entries accordingly
+            getContentResolver().notifyChange(WeatherContract.WeatherEntry.CONTENT_URI, null);
+        }
+    }
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public Intent getParentActivityIntent() {
