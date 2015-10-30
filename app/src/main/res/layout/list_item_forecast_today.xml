@@ -7,6 +7,8 @@
     android:orientation="horizontal"
     android:background="@drawable/today_touch_selector">
 
+
+
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="0dp"

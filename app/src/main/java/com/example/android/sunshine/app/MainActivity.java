@@ -44,8 +44,8 @@ public class MainActivity extends ActionBarActivity  implements  ForecastFragmen
         }
 
         ForecastFragment forecastFragment =  ((ForecastFragment)getSupportFragmentManager()
-                               .findFragmentById(R.id.fragment_forecast));
-               forecastFragment.setUseTodayLayout(!mTwoPane);
+                .findFragmentById(R.id.fragment_forecast));
+        forecastFragment.setUseTodayLayout(!mTwoPane);
 
 //        SunshineSyncAdapter.initializeSyncAdapter(this);
     }

@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.android.sunshine.app.data.WeatherContract;
 import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
 
@@ -171,14 +170,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             int weatherId = data.getInt(COL_WEATHER_CONDITION_ID);
 
             // Use weather art image
-          //  mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
+            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherId));
 
-            // Use weather art image
-            Glide.with(this)
-                    .load(Utility.getArtUrlForWeatherCondition(getActivity(), weatherId))
-                    .error(Utility.getArtResourceForWeatherCondition(weatherId))
-                    .crossFade()
-                    .into(mIconView);
             // Read date from cursor and update views for day of week and date
             long date = data.getLong(COL_WEATHER_DATE);
             String friendlyDateText = Utility.getDayName(getActivity(), date);
@@ -191,7 +184,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mDescriptionView.setText(description);
 
             // For accessibility, add a content description to the icon field
-                       mIconView.setContentDescription(description);
+            mIconView.setContentDescription(description);
             // Read high temperature from cursor and update view
             boolean isMetric = Utility.isMetric(getActivity());
 
