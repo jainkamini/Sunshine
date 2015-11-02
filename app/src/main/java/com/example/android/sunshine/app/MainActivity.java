@@ -9,13 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 
 public class MainActivity extends ActionBarActivity  implements  ForecastFragment.Callback{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
-
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private boolean mTwoPane;
     private String mLocation;
 
@@ -48,6 +50,12 @@ public class MainActivity extends ActionBarActivity  implements  ForecastFragmen
         forecastFragment.setUseTodayLayout(!mTwoPane);
 
       SunshineSyncAdapter.initializeSyncAdapter(this);
+        if (!checkPlayServices()) {
+            // this is where we could either prompt a user that they should install
+            // the latest version of Google Play Services, or add an error snackbar
+            // that some features won't be available.
+        }
+
     }
 
     @Override
@@ -101,20 +109,28 @@ public class MainActivity extends ActionBarActivity  implements  ForecastFragmen
     @Override
     protected void onResume() {
         super.onResume();
+
+        // If Google Play Services is not available, some features, such as GCM-powered weather
+        // alerts, will not be available.
+        if (!checkPlayServices()) {
+            // Store regID as null
+        }
+
         String location = Utility.getPreferredLocation(this);
         // update the location in our second pane using the fragment manager
         if (location != null && !location.equals(mLocation)) {
-            ForecastFragment ff = (ForecastFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
-            if (null != ff) {
+            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+            if ( null != ff ) {
                 ff.onLocationChanged();
             }
-            DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
-            if (null != df) {
+            DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            if ( null != df ) {
                 df.onLocationChanged(location);
             }
             mLocation = location;
         }
     }
+
 
 
     public void onItemSelected(Uri contentUri) {
@@ -136,5 +152,25 @@ public class MainActivity extends ActionBarActivity  implements  ForecastFragmen
                     .setData(contentUri);
             startActivity(intent);
         }
+    }
+
+    /**
+     * Check the device to make sure it has the Google Play Services APK. If
+     * it doesn't, display a dialog that allows users to download the APK from
+     * the Google Play Store or enable it in the device's system settings.
+     */
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(LOG_TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }
