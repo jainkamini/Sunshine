@@ -80,8 +80,8 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         if (checkPlayServices()) {
             mGcm = GoogleCloudMessaging.getInstance(this);
             String regId = getRegistrationId(this);
-
-            if (PROJECT_NUMBER.equals("221495239775")) {
+           // Log.i(LOG_TAG, "Saving regId  " + regId);
+            if (PROJECT_NUMBER.equals("Your Project Number")) {
                 new AlertDialog.Builder(this)
                         .setTitle("Needs Project Number")
                         .setMessage("GCM will not function in Sunshine until you set the Project Number to the one from the Google Developers Console.")
@@ -289,6 +289,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         final SharedPreferences prefs = getGCMPreferences(context);
         int appVersion = getAppVersion(context);
         Log.i(LOG_TAG, "Saving regId on app version " + appVersion);
+
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PROPERTY_REG_ID, regId);
         editor.putInt(PROPERTY_APP_VERSION, appVersion);
