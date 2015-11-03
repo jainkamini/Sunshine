@@ -81,6 +81,7 @@ public class ForecastAdapter extends CursorAdapter {
         int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
 
         int fallbackIconId;
+
         switch (viewType) {
 
             case VIEW_TYPE_TODAY: {
